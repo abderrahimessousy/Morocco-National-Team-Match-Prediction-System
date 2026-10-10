@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morocco Football • Predictive Intelligence</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --black: #000000;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #E5E5E5;
+            --gray-300: #D4D4D4;
+            --gray-400: #A3A3A3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-800: #262626;
+            --gray-900: #171717;
+            
+            --morocco-red: #C1272D;
+            --morocco-green: #006233;
+            --accent-blue: #2563EB;
+            --accent-green: #10B981;
+            --accent-amber: #F59E0B;
+            --accent-red: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--white);
+            color: var(--gray-900);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 400;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+        }
+
+        /* Morocco Background Images */
+        .morocco-background {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                /* Subtle football pattern */
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23C1272D' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E"),
+                
+                /* Gradient overlay for readability */
+                linear-gradient(to bottom, rgba(255,255,255,0.97), rgba(255,255,255,0.98));
+        }
+
+        /* National Team Crest Overlay */
+        .crest-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 Q70 30 70 50 Q70 70 50 90 Q30 70 30 50 Q30 30 50 10' fill='none' stroke='%23C1272D' stroke-width='0.5' opacity='0.05'/%3E%3Cpath d='M35 40 Q50 20 65 40 Q65 60 50 80 Q35 60 35 40' fill='none' stroke='%23006233' stroke-width='0.5' opacity='0.05'/%3E%3Ccircle cx='50' cy='50' r='20' fill='none' stroke='%23C1272D' stroke-width='0.3' opacity='0.05'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* Flag Pattern Overlay */
+        .flag-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 150px;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 0%, 
+                    transparent 45%,
+                    rgba(193, 39, 45, 0.02) 45%,
+                    rgba(193, 39, 45, 0.02) 55%,
+                    transparent 55%,
+                    transparent 100%),
+                linear-gradient(-45deg, 
+                    transparent 0%, 
+                    transparent 45%,
+                    rgba(0, 98, 51, 0.02) 45%,
+                    rgba(0, 98, 51, 0.02) 55%,
+                    transparent 55%,
+                    transparent 100%);
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Container with subtle border */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header with team photo background */
+        .header {
+            padding-bottom: 60px;
+            margin-bottom: 60px;
+            position: relative;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -20px;
+            width: 300px;
+            height: 200px;
+            background: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Cdefs%3E%3Cpattern id='jersey' width='40' height='40' patternUnits='userSpaceOnUse'%3E%3Crect width='40' height='40' fill='white'/%3E%3Cpath d='M20 0 L20 40 M0 20 L40 20' stroke='%23C1272D' stroke-width='1' opacity='0.1'/%3E%3Ccircle cx='20' cy='20' r='8' fill='%23006233' opacity='0.1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='300' height='200' fill='url(%23jersey)'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: -1;
+            border-radius: 8px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-crest {
+            width: 48px;
+            height: 48px;
+            background: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23C1272D'/%3E%3Ccircle cx='50' cy='50' r='35' fill='%23006233'/%3E%3Ctext x='50' y='58' font-family='Arial' font-size='24' font-weight='bold' text-anchor='middle' fill='white'%3EM%3C/text%3E%3C/svg%3E");
+            background-size: contain;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--black);
+            margin-bottom: 2px;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-tagline {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .page-title {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--morocco-red), var(--morocco-green));
+        }
+
+        .page-subtitle {
+            font-size: 20px;
+            color: var(--gray-600);
+            line-height: 1.5;
+            max-width: 600px;
+            margin-top: 30px;
+        }
+
+        /* Morocco Team Badge */
+        .team-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40'%3E%3Crect width='100' height='40' rx='20' fill='%23C1272D'/%3E%3Crect x='33' width='34' height='40' rx='17' fill='%23006233'/%3E%3C/svg%3E");
+            background-size: cover;
+            color: var(--white);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Main Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        /* Section Cards with subtle patterns */
+        .section {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C1272D' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1;
+            opacity: 0.3;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-200);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 0 L12 6 L18 6 L13 10 L15 16 L10 12 L5 16 L7 10 L2 6 L8 6 Z' fill='%23C1272D'/%3E%3C/svg%3E");
+            background-size: contain;
+            opacity: 0.5;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 32px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            color: var(--gray-900);
+            font-size: 16px;
+            font-family: inherit;
+            font-weight: 400;
+            transition: all 0.2s;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23C1272D'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--morocco-red);
+            box-shadow: 0 0 0 2px rgba(193, 39, 45, 0.1);
+        }
+
+        .form-text {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--gray-500);
+            font-weight: 400;
+        }
+
+        /* Button with Morocco Team Pattern */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: 
+                linear-gradient(135deg, var(--morocco-red), var(--morocco-green)),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L100 100 M100 0 L0 100' stroke='white' stroke-width='2' opacity='0.1'/%3E%3C/svg%3E");
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(193, 39, 45, 0.3);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        /* Results Container */
+        .results-container {
+            display: none;
+            background: 
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%23C1272D' stroke-width='0.5' opacity='0.05'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23006233' stroke-width='0.5' opacity='0.05'/%3E%3Ccircle cx='50' cy='50' r='20' fill='none' stroke='%23C1272D' stroke-width='0.5' opacity='0.05'/%3E%3C/svg%3E");
+            background-size: 200px;
+            background-position: center;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .results-container.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Match Info Cards with Flag Background */
+        .match-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            padding: 20px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--morocco-red), var(--morocco-green));
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        /* Prediction Display with Stadium Background */
+        .prediction-display {
+            text-align: center;
+            padding: 40px;
+            margin: 40px 0;
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            position: relative;
+            background: 
+                url("data:image/svg+xml,%3Csvg width='400' height='200' viewBox='0 0 400 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 Q200 50 400 100 Q200 150 0 100' fill='%23C1272D' fill-opacity='0.02'/%3E%3Cpath d='M0 100 Q200 80 400 100 Q200 120 0 100' fill='%23006233' fill-opacity='0.02'/%3E%3C/svg%3E"),
+                linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.98));
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        .prediction-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--morocco-red), var(--morocco-green));
+        }
+
+        .prediction-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .prediction-value {
+            font-size: 56px;
+            font-weight: 700;
+            margin: 20px 0;
+            line-height: 1;
+            position: relative;
+            display: inline-block;
+        }
+
+        .prediction-value::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--morocco-red), var(--morocco-green));
+            border-radius: 2px;
+        }
+
+        .prediction-value.win { color: var(--morocco-green); }
+        .prediction-value.draw { color: var(--accent-amber); }
+        .prediction-value.lose { color: var(--morocco-red); }
+
+        .confidence-text {
+            font-size: 14px;
+            color: var(--gray-500);
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        /* Probability Bars */
+        .probability-section {
+            margin: 40px 0;
+        }
+
+        .probability-item {
+            margin-bottom: 24px;
+        }
+
+        .probability-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .probability-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .probability-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .progress-container {
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                url("data:image/svg+xml,%3Csvg width='20' height='6' viewBox='0 0 20 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='3' x2='20' y2='3' stroke='%23999' stroke-width='0.5' stroke-dasharray='2,2' opacity='0.3'/%3E%3C/svg%3E");
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-bar.win { 
+            background: linear-gradient(90deg, var(--morocco-green), #008842);
+        }
+
+        .progress-bar.draw { 
+            background: linear-gradient(90deg, var(--accent-amber), #e67e22);
+        }
+
+        .progress-bar.lose { 
+            background: linear-gradient(90deg, var(--morocco-red), #a71e24);
+        }
+
+        /* Chart with Moroccan Border */
+        .chart-container {
+            height: 200px;
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            background: var(--white);
+            position: relative;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border: 2px solid transparent;
+            border-image: linear-gradient(45deg, var(--morocco-red), var(--morocco-green)) 1;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        /* Model Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--morocco-red), var(--morocco-green));
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--morocco-red), var(--morocco-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Instructions with Football Pattern */
+        .instructions {
+            text-align: center;
+            padding: 60px 40px;
+            color: var(--gray-500);
+            border: 2px dashed var(--gray-300);
+            border-radius: 4px;
+            background: 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='8' fill='%23C1272D' fill-opacity='0.03'/%3E%3Ccircle cx='30' cy='30' r='20' fill='none' stroke='%23006233' stroke-width='0.5' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        .instructions h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 16px;
+        }
+
+        .instructions p {
+            max-width: 400px;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Loading with Morocco Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .loading::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%23C1272D' stroke-width='4' opacity='0.1'/%3E%3C/svg%3E");
+            background-size: contain;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--gray-300);
+            border-top-color: var(--morocco-red);
+            border-right-color: var(--morocco-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer with Moroccan Pattern */
+        .footer {
+            padding: 40px 0;
+            margin-top: 80px;
+            position: relative;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--morocco-red), var(--morocco-green));
+        }
+
+        .footer::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: 
+                url("data:image/svg+xml,%3Csvg width='20' height='1' viewBox='0 0 20 1' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='0.5' x2='20' y2='0.5' stroke='%23C1272D' stroke-width='1' stroke-dasharray='5,5' opacity='0.2'/%3E%3C/svg%3E");
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: var(--gray-500);
+            text-align: center;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+            
+            .page-title {
+                font-size: 40px;
+            }
+            
+            .crest-overlay {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .page-title {
+                font-size: 32px;
+            }
+            
+            .page-subtitle {
+                font-size: 18px;
+            }
+            
+            .match-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .prediction-value {
+                font-size: 48px;
+            }
+            
+            .flag-overlay {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Images -->
+    <div class="morocco-background"></div>
+    <div class="crest-overlay"></div>
+    <div class="flag-overlay"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-crest"></div>
+                    <div class="logo-text">
+                        <h1>Morocco Football</h1>
+                        <p>AI Prediction System</p>
+                    </div>
+                </div>
+                <div class="header-tagline">Neural Network Analysis</div>
+            </div>
+            <h1 class="page-title">
+                Morocco National Football Match Predictor
+            </h1>
+            <p class="page-subtitle">
+                Using Machine Learning to predict match outcomes based on historical data (2010-2024)
+            </p>
+            <div class="team-badge">
+                <span>🇲🇦 Official National Team Analysis</span>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="main-grid">
+            <!-- Left Column: Input -->
+            <div class="section">
+                <h2 class="section-title">Match Configuration</h2>
+                
+                <form id="predictionForm">
+                    <div class="form-group">
+                        <label class="form-label">Opponent Team</label>
+                        <select class="form-select" id="opponent" required>
+                            <option value="">Select opponent team...</option>
+                            {% for opponent in opponents %}
+                            <option value="{{ opponent }}">{{ opponent }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="form-text">Select the opposing team</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Match Location</label>
+                        <select class="form-select" id="location" required>
+                            <option value="">Select match location...</option>
+                            <option value="Home">Home (in Morocco)</option>
+                            <option value="Away">Away (at opponent's stadium)</option>
+                        </select>
+                        <span class="form-text">Where the match will be played</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tournament Type</label>
+                        <select class="form-select" id="tournament" required>
+                            <option value="">Select tournament type...</option>
+                            {% for tournament in tournaments %}
+                            <option value="{{ tournament }}">{{ tournament }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="form-text">Type of competition</span>
+                    </div>
+                    
+                    <div class="row" style="margin-bottom: 40px;">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Year</label>
+                                <input type="number" class="form-control" id="year" 
+                                       value="{{ current_year }}" min="2010" max="2030">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Month</label>
+                                <input type="number" class="form-control" id="month" 
+                                       value="6" min="1" max="12">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">
+                        Generate Prediction
+                    </button>
+                </form>
+                
+                <!-- Loading -->
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <p style="color: var(--gray-500); margin-top: 20px;">Analyzing match data and making prediction...</p>
+                </div>
+                
+            </div>
+            
+            <!-- Right Column: Results -->
+            <div class="section">
+                <h2 class="section-title">Prediction Results</h2>
+                
+                <!-- Results Container -->
+                <div id="resultsContainer" class="results-container">
+                    <!-- Match Info -->
+                    <div class="match-info">
+                        <div class="info-card">
+                            <div class="info-label">Match</div>
+                            <div class="info-value" id="matchTeams">Morocco vs [Opponent]</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Tournament</div>
+                            <div class="info-value" id="matchTournament">[Tournament]</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Location</div>
+                            <div class="info-value" id="matchLocation">[Location]</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Date</div>
+                            <div class="info-value" id="matchDate">[Date]</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Prediction Display -->
+                    <div class="prediction-display">
+                        <div class="prediction-label">Predicted Outcome</div>
+                        <div class="prediction-value" id="predictionText">-</div>
+                        <div class="confidence-text" id="confidenceText">Confidence: Calculating...</div>
+                    </div>
+                    
+                    <!-- Probability Bars -->
+                    <div class="probability-section">
+                        <div class="probability-item">
+                            <div class="probability-header">
+                                <span class="probability-label">Win</span>
+                                <span class="probability-value" id="winProb">0%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar win" id="winBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="probability-item">
+                            <div class="probability-header">
+                                <span class="probability-label">Draw</span>
+                                <span class="probability-value" id="drawProb">0%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar draw" id="drawBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="probability-item">
+                            <div class="probability-header">
+                                <span class="probability-label">Lose</span>
+                                <span class="probability-value" id="loseProb">0%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar lose" id="loseBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart -->
+                    <div class="chart-container">
+                        <canvas id="probabilityChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Instructions -->
+                <div id="instructions" class="instructions">
+                    <h3>Ready to Predict</h3>
+                    <p>
+                        Fill in the match details on the left and click "Generate Prediction" 
+                        to see the prediction.
+                    </p>
+                    <p style="color: var(--gray-500); margin-top: 16px; font-size: 14px;">
+                        The model analyzes historical data and provides probabilities for each possible outcome.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">
+                🇲🇦 Morocco Football Intelligence System • Version 3.2.1 • 
+                Neural Network ID: NN-2024-MFC-PRED
+                <br>
+                Machine Learning Project • Data: 2010-2014 International Matches
+                <br>
+                <span id="currentYear"></span> • All predictions are based on historical data analysis
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Set current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Chart instance
+        let probabilityChart = null;
+        
+        // Form submission
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const formData = {
+                opponent: document.getElementById('opponent').value,
+                location: document.getElementById('location').value,
+                tournament: document.getElementById('tournament').value,
+                year: document.getElementById('year').value || new Date().getFullYear(),
+                month: document.getElementById('month').value || new Date().getMonth() + 1
+            };
+            
+            // Validate form
+            if (!formData.opponent || !formData.location || !formData.tournament) {
+                showNotification('Please fill in all required fields.', 'error');
+                return;
+            }
+            
+            // Show loading, hide instructions
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('instructions').style.display = 'none';
+            document.getElementById('resultsContainer').classList.remove('show');
+            
+            try {
+                // Send prediction request
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.success) {
+                    // Update match details
+                    document.getElementById('matchTeams').textContent = 
+                        `Morocco vs ${formData.opponent}`;
+                    document.getElementById('matchTournament').textContent = formData.tournament;
+                    document.getElementById('matchLocation').textContent = formData.location;
+                    document.getElementById('matchDate').textContent = 
+                        `${formData.year}-${String(formData.month).padStart(2, '0')}`;
+                    
+                    // Update prediction
+                    const prediction = data.prediction;
+                    const predictionText = document.getElementById('predictionText');
+                    predictionText.textContent = prediction;
+                    predictionText.className = 'prediction-value';
+                    
+                    // Color code the prediction
+                    if (prediction === 'Win') {
+                        predictionText.classList.add('win');
+                    } else if (prediction === 'Draw') {
+                        predictionText.classList.add('draw');
+                    } else {
+                        predictionText.classList.add('lose');
+                    }
+                    
+                    // Update probabilities
+                    const probabilities = data.probabilities;
+                    
+                    // Win
+                    const winPercent = (probabilities.Win * 100).toFixed(1);
+                    document.getElementById('winProb').textContent = winPercent + '%';
+                    setTimeout(() => {
+                        document.getElementById('winBar').style.width = winPercent + '%';
+                    }, 100);
+                    
+                    // Draw
+                    const drawPercent = (probabilities.Draw * 100).toFixed(1);
+                    document.getElementById('drawProb').textContent = drawPercent + '%';
+                    setTimeout(() => {
+                        document.getElementById('drawBar').style.width = drawPercent + '%';
+                    }, 300);
+                    
+                    // Lose
+                    const losePercent = (probabilities.Lose * 100).toFixed(1);
+                    document.getElementById('loseProb').textContent = losePercent + '%';
+                    setTimeout(() => {
+                        document.getElementById('loseBar').style.width = losePercent + '%';
+                    }, 500);
+                    
+                    // Confidence text
+                    const maxProb = Math.max(probabilities.Win, probabilities.Draw, probabilities.Lose);
+                    document.getElementById('confidenceText').textContent = 
+                        `Confidence: ${(maxProb * 100).toFixed(1)}%`;
+                    
+                    // Update chart
+                    updateChart(probabilities);
+                    
+                    // Show results
+                    document.getElementById('resultsContainer').classList.add('show');
+                    
+                    // Show success notification
+                    showNotification('Prediction generated successfully', 'success');
+                    
+                } else {
+                    showNotification('Error: ' + data.error, 'error');
+                    document.getElementById('instructions').style.display = 'block';
+                }
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('instructions').style.display = 'block';
+                showNotification('Network error: ' + error.message, 'error');
+            }
+        });
+        
+        // Function to update the chart
+        function updateChart(probabilities) {
+            const ctx = document.getElementById('probabilityChart').getContext('2d');
+            
+            // Destroy existing chart
+            if (probabilityChart) {
+                probabilityChart.destroy();
+            }
+            
+            // Create new chart
+            probabilityChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Win', 'Draw', 'Lose'],
+                    datasets: [{
+                        data: [
+                            probabilities.Win * 100,
+                            probabilities.Draw * 100,
+                            probabilities.Lose * 100
+                        ],
+                        backgroundColor: [
+                            'rgba(0, 98, 51, 0.9)',
+                            'rgba(245, 158, 11, 0.9)',
+                            'rgba(193, 39, 45, 0.9)'
+                        ],
+                        borderColor: [
+                            'rgb(0, 98, 51)',
+                            'rgb(245, 158, 11)',
+                            'rgb(193, 39, 45)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleColor: 'var(--white)',
+                            bodyColor: 'var(--white)',
+                            borderColor: 'var(--morocco-red)',
+                            borderWidth: 1,
+                            cornerRadius: 2,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: 'var(--gray-500)',
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: 'var(--gray-700)',
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Notification function
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                background: var(--white);
+                color: var(--gray-900);
+                border: 1px solid ${type === 'success' ? 'var(--morocco-green)' : 'var(--morocco-red)'};
+                border-left: 4px solid ${type === 'success' ? 'var(--morocco-green)' : 'var(--morocco-red)'};
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                max-width: 400px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                background-image: 
+                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='${type === 'success' ? '%23006233' : '%23C1272D'}'%3E%3Cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clip-rule='evenodd'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: 16px center;
+                background-size: 20px;
+                padding-left: 48px;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 4 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
+        }
+        
+        // Load model info on page load
+        async function loadModelInfo() {
+            try {
+                const response = await fetch('/model_info');
+                const data = await response.json();
+                
+                if (data.accuracy) {
+                    const accuracy = Math.round(data.accuracy * 100);
+                    document.getElementById('accuracy').textContent = accuracy + '%';
+                }
+                
+                if (data.matches) {
+                    document.getElementById('matches').textContent = data.matches;
+                }
+            } catch (error) {
+                console.log('Could not load model info:', error);
+            }
+        }
+        
+        // Set default year to current
+        document.getElementById('year').value = new Date().getFullYear();
+        document.getElementById('month').value = new Date().getMonth() + 1;
+        
+        // Load model info when page loads
+        window.addEventListener('DOMContentLoaded', loadModelInfo);
+        
+        // Initialize with empty chart
+        window.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('probabilityChart').getContext('2d');
+            probabilityChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Win', 'Draw', 'Lose'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            'rgba(0, 98, 51, 0.2)',
+                            'rgba(245, 158, 11, 0.2)',
+                            'rgba(193, 39, 45, 0.2)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { display: false },
+                            ticks: { display: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: 'var(--gray-300)',
+                                font: { 
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Add CSS for notifications
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

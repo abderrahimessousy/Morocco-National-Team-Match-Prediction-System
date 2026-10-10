@@ -1,0 +1,27 @@
+Morocco Football Match Predictor - Model Summary
+==================================================
+
+Dataset: African-Nations-results.csv
+Total Morocco matches: 152
+Training set size: 121
+Test set size: 31
+
+Model Performance:
+  Logistic Regression Accuracy: 0.484
+  Random Forest Accuracy: 0.548
+
+Features used:
+  - is_home
+  - tournament_encoded
+  - opponent_encoded
+  - opponent_strength
+  - year
+  - month
+  - rolling_win_rate
+  - rolling_goals_scored
+  - rolling_goals_conceded
+
+Target classes:
+  0: Draw
+  1: Lose
+  2: Win
